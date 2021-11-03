@@ -141,7 +141,8 @@ class Server
 
         $this->vbot->console->log('please scan the qrCode with wechat.');
         while ($retryTime > 0) {
-            $url = sprintf('https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?tip=%s&uuid=%s&_=%s', $tip, $this->vbot->config['server.uuid'], time());
+            $url = sprintf('https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?mod=desktop&tip=%s&uuid=%s&_=%s', $tip, $this->vbot->config['server.uuid'], time());
+            //$url = sprintf('https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?tip=%s&uuid=%s&_=%s', $tip, $this->vbot->config['server.uuid'], time());
 
             $content = $this->vbot->http->get($url, ['timeout' => 35]);
 
@@ -163,6 +164,11 @@ class Server
                     $this->vbot->config['server.uri.base'] = sprintf($url, $matches[2]);
 
                     return;
+                case '408':
+                    $tip = 1;
+                    $retryTime -= 1;
+                    sleep(1);
+                    break;
                 default:
                     $tip = 1;
                     $retryTime -= 1;

@@ -125,7 +125,7 @@ class MessageHandler
             foreach ($message['AddMsgList'] as $msg) {
                 $collection = $this->vbot->messageFactory->make($msg);
                 if ($collection) {
-                    $this->cache($msg, $collection);
+                    //$this->cache($msg, $collection);
                     $this->console($collection);
                     if (!$this->vbot->messageExtension->exec($collection) && $this->handler) {
                         call_user_func_array($this->handler, [$collection]);
